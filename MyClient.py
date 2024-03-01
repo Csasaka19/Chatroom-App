@@ -7,6 +7,10 @@ IP = "127.0.0.1"
 PORT = 200
 HEADER_LENGTH = 10
 
+def main():
+    # Start the client
+    start_client()
+
 def start_client():
     # Client username which is used to identify the client
     my_username = input("Username: ")
@@ -80,3 +84,7 @@ def start_client():
             # Any other exception - something happened, exit
             print('Reading error: '.format(str(e)))
             sys.exit()
+
+
+if __name__ == "__main__":
+    main()

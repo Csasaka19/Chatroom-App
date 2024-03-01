@@ -14,7 +14,7 @@ def start_server():
     # Create a socket object
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     # Set the socket option to reuse the address
-    server_socket.setsockopt(socket.SQL_SOCKET, socket.SO_REUSEADDR, 1)
+    server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     
     try:
         server_socket.bind((HOST, PORT))
