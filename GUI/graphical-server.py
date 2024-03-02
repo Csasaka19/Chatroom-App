@@ -46,6 +46,7 @@ def server_start():
         # Success connection message to the client
         conn.send("Connected to the server!".encode(FORMAT))
         
+        print()
         # Threading allows concurrent client connections to the server
         thread = threading.Thread(target=handle_client, args=(conn, address))
         
