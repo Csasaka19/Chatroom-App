@@ -2,7 +2,7 @@ import socket
 import sys
 import select
 
-HOST = '127.0.0.1'
+HOST = '127.0.0.1' # '0.0.0.0' to listen on all available interfaces
 PORT = 200
 HEADER_LENGTH = 10
 
@@ -75,7 +75,7 @@ def receive_message(client_socket):
         # Receive the "header" containing message length
         message_header = client_socket.recv(HEADER_LENGTH)
         # If no data received, client closed a connection
-        if not len(HEADER_LENGTH):
+        if not len(message_header):
             return False
         
         # Convert header to int value
