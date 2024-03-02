@@ -16,9 +16,23 @@ If you don't want to run the server with sudo privileges, you can use a port num
 
 ### Starting the server
 
+    cd command-line
+    run sudo python3 MyServer.py
+
+    or alternatively from the root repository:
+    run sudo python3 command-line/MyServer.py
+
 ![Starting_Server](img/start.png)
 
 ### Clients
+
+    cd command-line
+    run  python3 MyClient.py
+
+    or alternatively from the root repository:
+    run python3 command-line/MyClient.py
+
+    Different clients need different terminals.
 
 `Client CC created.Messages sent`
 ![Client_Server](img/client1.png)
@@ -39,7 +53,7 @@ If you don't want to run the server with sudo privileges, you can use a port num
 `Connections closed`
 ![Starting_Server](img/closed.png)
 
-## Disclaimer
+### Disclaimer
 
 Host `0.0.0.0` will listen to all IP addresses.Listening on all interfaces could potentially expose your server to the internet (if it's connected), which could be a security risk if your server is not secured properly.
 

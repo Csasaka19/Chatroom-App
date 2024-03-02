@@ -77,11 +77,10 @@ def start_client():
                 print('Reading error: {}'.format(str(e)))
                 sys.exit()
 
-            # We just did not receive anything
+            # Nothing received 
             continue
 
         except Exception as e:
-            # Any other exception - something happened, exit
             print('Reading error: '.format(str(e)))
             sys.exit()
 
