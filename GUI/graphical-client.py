@@ -19,7 +19,7 @@ class User_interface:
         # chat window which is currently hidden
         self.Window = Tk()
         self.Window.withdraw()
- 
+
         # login window
         self.login = Toplevel()
         # set the title
@@ -33,7 +33,7 @@ class User_interface:
                          text="Sign in to proceed",
                          justify=CENTER,
                          font=("Courier", 14, "bold"))
- 
+
         self.pls.place(relheight=0.15,
                        relx=0.2,
                        rely=0.07)
@@ -41,47 +41,47 @@ class User_interface:
         self.labelName = Label(self.login,
                                text="Username: ",
                                font=("Courier", 12))
- 
+
         self.labelName.place(relheight=0.3,
                              relx=0.2,
                              rely=0.2)
- 
+
         # Input box for the name
         self.entryName = Entry(self.login,
                                font=("Courier", 14))
- 
+
         self.entryName.place(relwidth=0.4,
                              relheight=0.12,
                              relx=0.5,
                              rely=0.3)
- 
+
         # set the focus of the cursor
         self.entryName.focus()
- 
+
         # Continue Button to go to the chat window
         self.go = Button(self.login,
                          text="PROCEED",
                          font=("Courier", 14, "bold"),
                          command=lambda: self.goAhead(self.entryName.get()))
- 
+
         self.go.place(relx=0.4,
                       rely=0.55)
-        
+
         # The mainloop of the program from tkinter
         self.Window.mainloop()
-    
+
     def goAhead(self, name):
         self.login.destroy()
         self.layout(name)
- 
+
         # the thread to receive messages
         receiver = threading.Thread(target=self.receive)
         receiver.start()
-    
+
     # The main chat window layout
     # The main layout of the chat
     def layout(self, name):
- 
+
         self.name = name
         # to show chat window
         self.Window.deiconify()
@@ -97,16 +97,16 @@ class User_interface:
                                text=self.name,
                                font=("Courier", 13, "bold"),
                                pady=5)
- 
+
         self.labelHead.place(relwidth=1)
         self.line = Label(self.Window,
                           width=450,
                           bg="#ABB2B9")
- 
+
         self.line.place(relwidth=1,
                         rely=0.07,
                         relheight=0.012)
- 
+
         self.textCons = Text(self.Window,
                              width=20,
                              height=2,
@@ -115,31 +115,31 @@ class User_interface:
                              font=("Courier", 14),
                              padx=5,
                              pady=5)
- 
+
         self.textCons.place(relheight=0.745,
                             relwidth=1,
                             rely=0.08)
- 
+
         self.labelBottom = Label(self.Window,
                                  bg="#ABB2B9",
                                  height=80)
- 
+
         self.labelBottom.place(relwidth=1,
                                rely=0.825)
- 
+
         self.entryMsg = Entry(self.labelBottom,
                               bg="#2C3E50",
                               fg="#EAECEE",
                               font=("Courier", 13))
- 
+
         # place the given widget approximately in the middle
         self.entryMsg.place(relwidth=0.74,
                             relheight=0.06,
                             rely=0.008,
                             relx=0.011)
- 
+
         self.entryMsg.focus()
- 
+
         # create a Send Button
         self.buttonMsg = Button(self.labelBottom,
                                 text="Send",
@@ -147,25 +147,38 @@ class User_interface:
                                 width=20,
                                 bg="#ABB2B9",
                                 command=lambda: self.sendButton(self.entryMsg.get()))
- 
+
         self.buttonMsg.place(relx=0.77,
                              rely=0.008,
                              relheight=0.06,
                              relwidth=0.22)
- 
+
+        # create a Quit Button
+        self.buttonQuit = Button(self.labelBottom,
+                                 text="Quit",
+                                 font=("Courier", 10, "bold"),
+                                 width=20,
+                                 bg="#ABB2B9",
+                                 command=self.quitApplication)
+
+        self.buttonQuit.place(relx=0.6,
+                              rely=0.008,
+                              relheight=0.06,
+                              relwidth=0.15)
+
         self.textCons.config(cursor="arrow")
- 
+
         # create a scroll bar
         scrollbar = Scrollbar(self.textCons)
- 
+
         # place the given widget approximately in the middle
         scrollbar.place(relheight=1,
                         relx=0.974)
- 
+
         scrollbar.config(command=self.textCons.yview)
- 
+
         self.textCons.config(state=DISABLED)
-        
+
         # function to basically start the thread for sending messages
     def sendButton(self, msg):
         self.textCons.config(state=NORMAL)
@@ -175,13 +188,12 @@ class User_interface:
         snd.start()
         self.textCons.config(state=DISABLED)
 
- 
     # Allow clients to receive messages in chatroom
     def receive(self):
         while True:
             try:
                 message = client.recv(1024).decode(FORMAT)
- 
+
                 # Send the client's name from the server
                 if message == 'NAME':
                     client.send(self.name.encode(FORMAT))
@@ -190,15 +202,15 @@ class User_interface:
                     self.textCons.config(state=NORMAL)
                     self.textCons.insert(END,
                                          message+"\n\n")
- 
+
                     self.textCons.config(state=DISABLED)
                     self.textCons.see(END)
             except:
                 # an error will be printed on the command line or console if there's an error
                 print("An error occurred!")
-                client.close()
+                self.quitApplication()
                 break
- 
+
     # Send the message to the chatroom
     def sendMessage(self):
         self.textCons.config(state=DISABLED)
@@ -206,6 +218,11 @@ class User_interface:
             message = (f"{self.name}: {self.msg}")
             client.send(message.encode(FORMAT))
             break
+
+    # Quit the application and close the socket connection
+    def quitApplication(self):
+        client.close()
+        self.Window.destroy()
 
 # Set the theme to 'clam' for a modern look
 ttk.Style().theme_use('clam')

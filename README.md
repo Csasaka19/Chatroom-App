@@ -82,10 +82,10 @@ Always make sure to implement proper security measures when writing server softw
 ### Graphical Chatroom
 
     cd GUI
-    run  python3 graphical-server.py
+    run  python3 graphical-client.py
 
     or alternatively from the root repository:
-    run python3 GUI/graphical-server.py
+    run python3 GUI/graphical-client.py
 
     Requires more than one session in the room.
 
